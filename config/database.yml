@@ -6,7 +6,7 @@ development:
   username: coba
   password: password
 
-test:
+test: &test
   adapter: postgresql
   encoding: unicode
   database: coba
@@ -21,3 +21,6 @@ production:
   pool: 5
   username: coba
   password: password
+
+cucumber:
+  <<: *test
