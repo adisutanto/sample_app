@@ -1,26 +1,21 @@
-development:
+development: &pg
   adapter: postgresql
   encoding: unicode
-  database: coba
+  database: sample_app
   pool: 5
-  username: coba
+  username: sample_app_user
   password: password
 
 test: &test
   adapter: postgresql
   encoding: unicode
-  database: coba
+  database: sample_app_test
   pool: 5
-  username: coba
+  username: sample_app_user
   password: password
 
 production:
-  adapter: postgresql
-  encoding: unicode
-  database: coba
-  pool: 5
-  username: coba
-  password: password
+  <<: *pg
 
 cucumber:
   <<: *test

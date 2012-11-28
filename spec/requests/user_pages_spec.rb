@@ -52,10 +52,28 @@ describe "User pages" do
 
   describe "profile page" do
     let(:user) { FactoryGirl.create(:user) }
+
     before { visit user_path(user) }
 
     it { should have_selector('h1', text: user.name) }
     it { should have_selector('title', text: user.name) }
+
+    describe "microposts pagination" do
+      before(:all) { 31.times { FactoryGirl.create(:micropost, user: user, content: Faker::Lorem.sentence(5)) } }
+      after(:all) do
+        user.microposts.delete_all
+        user.delete
+      end
+
+      it { should have_content(user.microposts.count) }
+      it { should have_selector('div.pagination') }
+
+      it "should list each micropost" do
+        Micropost.paginate(page: 1).each do |micropost|
+          page.should have_selector('li', text: micropost.content)
+        end
+      end
+    end
   end
 
   describe "signup" do

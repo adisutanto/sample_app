@@ -16,6 +16,51 @@ describe "Static pages" do
 
     it_should_behave_like "all static pages"
     it { should_not have_selector 'title', text: '| Home' }
+
+    describe "for signed-in users" do
+      let(:user) { FactoryGirl.create(:user) }
+      before do
+        FactoryGirl.create(:micropost, user: user, content: "Lorem ipsum")
+        FactoryGirl.create(:micropost, user: user, content: "Dolor sit amet")
+        sign_in user
+        visit root_path
+      end
+
+      it { should have_content(pluralize(user.microposts.count, "micropost")) }
+
+      it "should render the user's feed" do
+        user.feed.each do |item|
+          page.should have_selector("li##{item.id}", text: item.content)
+        end
+      end
+
+      describe "feed pagination" do
+        before(:all) do
+          30.times { FactoryGirl.create(:micropost, user: user, content: Faker::Lorem.sentence(5)) }
+        end
+        after(:all) do
+          user.feed.delete_all
+          user.delete
+        end
+
+        it { should have_selector('div.pagination') }
+      end
+
+      describe "feed delete links" do
+        let(:other_user) { FactoryGirl.create(:user) }
+        let(:other_micropost) { FactoryGirl.create(:micropost, user: other_user) }
+
+        it "shall not appear for microposts not created by the current user, and vice versa" do
+          user.feed.each do |f|
+            if f.user == user
+              page.should have_link('delete', href: micropost_path(f))
+            else
+              page.should_not have_link('delete')
+            end
+          end
+        end
+      end
+    end
   end
 
   describe "Help page" do
