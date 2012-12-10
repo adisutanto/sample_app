@@ -26,4 +26,9 @@ class Micropost < ActiveRecord::Base
     where("user_id IN (#{followed_user_ids}) OR user_id = :user_id", 
           user_id: user)
   end
+
+  def self.maxlength
+    (Micropost.validators_on(:content).select { |v| v.class == ActiveModel::Validations::LengthValidator }).first.options[:maximum]
+  end
+
 end
