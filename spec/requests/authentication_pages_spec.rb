@@ -126,6 +126,35 @@ describe "Authentication" do
           specify { response.should redirect_to(signin_path) }
         end
       end
+
+      describe "in the Downloads controller" do
+        let(:download) { FactoryGirl.create(:download) }
+
+        describe "visiting the new page" do
+          before { visit new_download_path }
+          it { should have_selector('title', text: 'Sign in') }
+        end
+
+        describe "submitting to the create action" do
+          before { post downloads_path }
+          specify { response.should redirect_to(signin_path) }
+        end
+
+        describe "visiting the edit page" do
+          before { visit edit_download_path(download) }
+          it { should have_selector('title', text: 'Sign in') }
+        end
+
+        describe "submitting to the update action" do
+          before { put download_path(download) }
+          specify { response.should redirect_to(signin_path) }
+        end
+
+        describe "submitting to the destroy action" do
+          before { delete download_path(1) }
+          specify { response.should redirect_to(signin_path) }
+        end
+      end
     end
 
     describe "for signed-in users" do
@@ -170,6 +199,35 @@ describe "Authentication" do
       describe "submitting a DELETE request to the Users#destroy action" do
         before { delete user_path(user) }
         specify { response.should redirect_to(root_path) }
+      end
+      
+      describe "in the Downloads controller" do
+        let(:download) { FactoryGirl.create(:download) }
+
+        describe "visiting the new page" do
+          before { visit new_download_path }
+          it { should have_selector('title', text: 'Sign in') }
+        end
+
+        describe "submitting to the create action" do
+          before { post downloads_path }
+          specify { response.should redirect_to(signin_path) }
+        end
+
+        describe "visiting the edit page" do
+          before { visit edit_download_path(download) }
+          it { should have_selector('title', text: 'Sign in') }
+        end
+
+        describe "submitting to the update action" do
+          before { put download_path(download) }
+          specify { response.should redirect_to(signin_path) }
+        end
+
+        describe "submitting to the destroy action" do
+          before { delete download_path(1) }
+          specify { response.should redirect_to(signin_path) }
+        end
       end
     end
 

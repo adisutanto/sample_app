@@ -14,4 +14,9 @@ FactoryGirl.define do
     content "Lorem ipsum"
     user
   end
+
+  factory :download do
+    name "file 1"
+    filepath "dummy.txt"
+  end
 end

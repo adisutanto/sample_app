@@ -1,0 +1,7 @@
+<% provide(:title, 'All downloads') %>
+<h1>All downloads</h1>
+
+<ul class="downloads">
+  <%= render @downloads %>
+</ul>
+<%= link_to "New download", new_download_path if signed_in? && current_user.admin? %>

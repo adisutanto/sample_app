@@ -1,0 +1,8 @@
+<li>
+  <%= download.name %>
+  | <%= link_to "download", download %>
+  <% if current_user && current_user.admin? %>
+    | <%= link_to "edit", edit_download_path(download) %>
+    | <%= link_to "delete", download, method: :delete, data: { confirm: "Are you sure?" } %>
+  <% end %>
+</li>
